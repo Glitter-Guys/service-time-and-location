@@ -5,6 +5,7 @@ const moment = require('moment');
 const timeLocationModel = require('./../db/models/timeLocation.js');
 
 mongoose.connect('mongodb://localhost/timeLocations');
+///
 
 // Randomly create fake data for occasional event as weekly or monthly
 const createRandomSeries = () => {
