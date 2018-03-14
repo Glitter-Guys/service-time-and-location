@@ -22,7 +22,7 @@ const When = ({ whenData }) => {
   return (
     <div className={TextSectionsStyle.textSection}>
       <div className={TextSectionsStyle.icon}>
-        <SVG viewBox="0 0 24 24" height="24" width="24" src="http://127.0.0.1:9000/icons/clock.svg" />
+        <SVG viewBox="0 0 24 24" height="24" width="24" src="../dist/icons/clock.svg" />
       </div>
       <div className="when__text">
         {whenData.multiDay ?

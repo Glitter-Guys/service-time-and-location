@@ -6,7 +6,7 @@ import ReusableStyles from './../../dist/styles/reusable.css';
 const Where = ({ whereData }) => (
   <div className={TextSectionsStyle.textSection}>
     <div className={TextSectionsStyle.icon}>
-      <SVG viewBox="0 0 24 24" height="24" width="24" src="http://127.0.0.1:9000/icons/location.svg" />
+      <SVG viewBox="0 0 24 24" height="24" width="24" src="../dist/icons/location.svg" />
     </div>
     <div className="where__text">
       {whereData.venuePublic ?
