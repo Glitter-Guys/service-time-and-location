@@ -1,53 +1,30 @@
 const { MongoClient } = require('mongodb');
-const faker = require('faker');
+const assert = require('assert');
+const generateData = require('./dataGenerator.js');
 
 const URL = 'mongodb://localhost:27017';
+const dbName = 'tests';
+const collectionName = 'timelocations';
 
-// Randomly create fake data for occasional event as weekly or monthly
-const createRandomSeries = () => {
-  const seriesValues = [null, null, null, null, null, 'weekly', 'monthly'];
-  const randomIdx = Math.floor(Math.random() * seriesValues.length);
-  return seriesValues[randomIdx];
-};
-
-const createFakeData = (i) => {
-  const data = {};
-  data.eventId = i;
-  data.startTime = faker.date.past();
-  data.endTime = faker.date.future();
-  data.series = createRandomSeries();
-  data.series = Math.random() >= 0.5;
-  data.venueName = faker.company.companyName();
-  data.address = faker.address.streetAddress();
-  data.city = faker.address.city();
-  data.state = faker.address.state();
-  data.longitude = faker.address.longitude();
-  data.latitude = faker.address.latitude();
-  return data;
-};
-
-const createDataNTimes = (start, end) => {
-  const data = [];
-  for (let i = start; i < end; i += 1) {
-    data.push(createFakeData(i));
-  }
-  return data;
-};
+MongoClient.connect(URL, (err, client) => {
+  assert.equal(null, err);
+  console.log('Connected to DB');
+  const db = client.db(dbName);
+  const collection = db.collection(collectionName);
+  seedData(collection, db);
+});
 
 let total = 0;
-let batchNum = 10;
-const increments = 10;
+let batchNum = 100;
+const increments = 100;
 const limit = 10000000;
 const processes = limit / batchNum;
 const oneTenth = limit / 10;
 
-async function seedData() {
-  const client = await MongoClient.connect(URL);
-  const db = client.db('tests');
-  const collection = db.collection('timelocations');
-  const begin = new Date().getTime() / 60000;
+async function seedData(collection, db) {
+  console.time('Seed Time');
   for (let i = 0; i < processes; i += 1) {
-    const data = createDataNTimes(total, batchNum);
+    const data = generateData(total, batchNum);
     await collection.insertMany(data);
     total += increments;
     batchNum += increments;
@@ -55,16 +32,11 @@ async function seedData() {
       console.log(total);
     }
   }
-  const end = new Date().getTime() / 60000;
-  const time = (end - begin).toFixed(4);
-  console.log('Execution time: ' + time + ' minutes');
-  client.close();
+  console.timeEnd('Seed Time');
+  db.close();
   process.exit();
 }
 
-seedData();
-
 module.exports = {
   seed: seedData,
-  createData: createDataNTimes,
 };
