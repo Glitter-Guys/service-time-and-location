@@ -1,24 +1,37 @@
-const seed = require('../workers/seed10m.js');
-const db = require('../db/models/testSchemas.js');
-const mongoose = require('mongoose');
+const { MongoClient } = require('mongodb');
+// const seed = require('../workers/seed10m.js');
+const generateData = require('../workers/dataGenerator.js');
 
-describe('Seeding Tests', () => {
-  beforeAll(() => {
-    mongoose.connect('mongodb://localhost/test');
-  });
-  afterEach(async (done) => {
-    await mongoose.connection.test.dropCollection('testmodels');
+const URL = 'mongodb://locahost:27017';
+const dbName = 'tests';
+const collectionName = 'timelocations';
+
+describe('Tests for MongoDB', () => {
+  let db;
+  let collection;
+
+  beforeAll((done) => {
+    MongoClient.connect(URL, (err, client) => {
+      if (err) throw err;
+      db = client.db(dbName);
+      collection = db.collection(collectionName);
+      done();
+    });
   });
   afterAll((done) => {
-    mongoose.disconnect(done);
-  });
-  test('1 + 1', () => {
-    expect(db.t()).toBe(2);
-  });
-  test('seed 5000 data points', async () => {
-    db.all((err, data) => {
-      if (err) console.log('error');
-      expect(data.length).toBe(5000);
+    collection.remove({}, (err, success) => {
+      if (err) throw err;
+      client.close();
+      done();
     });
+  });
+
+  test('should create an array of 500 data points', (done) => {
+    const start = 0;
+    const end = 500;
+    const data = generateData(start, end);
+    console.log(data.length);
+    expect(data.length).toBe(500);
+    done();
   });
 });

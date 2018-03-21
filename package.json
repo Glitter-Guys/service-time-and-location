@@ -17,7 +17,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "seed": "node workers/seed10m.js"
+    "seed": "node workers/seed10mSQL.js"
   },
   "dependencies": {
     "async": "^2.6.0",
@@ -29,6 +29,8 @@
     "moment": "^2.20.1",
     "mongodb": "^3.0.4",
     "mongoose": "^5.0.6",
+    "pg": "^7.4.1",
+    "pg-promise": "^8.2.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-inlinesvg": "^0.7.5",
