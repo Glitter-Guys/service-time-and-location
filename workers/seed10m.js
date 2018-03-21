@@ -15,19 +15,19 @@ MongoClient.connect(URL, (err, client) => {
 });
 
 let total = 0;
-let batchNum = 100;
+let batchSize = 100;
 const increments = 100;
 const limit = 10000000;
-const processes = limit / batchNum;
+const processes = limit / batchSize;
 const oneTenth = limit / 10;
 
 async function seedData(collection, db) {
   console.time('Seed Time');
   for (let i = 0; i < processes; i += 1) {
-    const data = generateData(total, batchNum);
+    const data = generateData(total, batchSize);
     await collection.insertMany(data);
     total += increments;
-    batchNum += increments;
+    batchSize += increments;
     if (total % oneTenth === 0) {
       console.log(total);
     }
