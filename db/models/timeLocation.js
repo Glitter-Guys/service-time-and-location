@@ -31,10 +31,5 @@ function findModel(id, callback) {
   TimeLocationModel.findOne({ eventId: id }, callback);
 }
 
-// function countAll(callback){
-//   TimeLocationModel.count({}, callback);
-// };
-
 exports.insertModel = insertModel;
 exports.findModel = findModel;
-// exports.countAll = countAll;
