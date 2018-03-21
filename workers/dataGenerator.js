@@ -34,8 +34,13 @@ const createDataNTimes = (start, end) => {
 
 function camelToUnderscore(obj) {
   const newObj = {};
-  for (let key in obj) {
-    newObj[key.replace(/([A-Z])/g, "_$1").toLowerCase()] = obj[key];
+  const keys = Object.keys(obj);
+  for (let i = 0; i < keys.length; i += 1) {
+    if (/[A-Z]/.test(keys[i])) {
+      newObj[keys[i].replace(/([A-Z])/g, '_$1').toLowerCase()] = obj[keys[i]];
+    } else {
+      newObj[keys[i]] = obj[keys[i]];
+    }
   }
   return newObj;
 }
