@@ -1,1 +1,1 @@
-CREATE DATABASE timelocations;
+CREATE DATABASE events;
