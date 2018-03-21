@@ -1,4 +1,4 @@
-CREATE TABLE data (
+CREATE TABLE timelocations (
   event_id INT,
   start_time DATE,
   end_time DATE,
