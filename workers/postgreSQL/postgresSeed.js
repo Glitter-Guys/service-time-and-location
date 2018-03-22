@@ -1,5 +1,5 @@
 const pgp = require('pg-promise')({});
-const generator = require('./dataGenerator.js');
+const generator = require('../dataGenerator.js');
 const path = require('path');
 const columnSet = require('../db/models/columnSet.js');
 

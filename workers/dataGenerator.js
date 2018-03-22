@@ -3,7 +3,7 @@ const faker = require('faker');
 
 // Randomly create fake data for occasional event as weekly or monthly
 const createRandomSeries = () => {
-  const seriesValues = [null, null, null, null, null, "weekly", "monthly"];
+  const seriesValues = [null, null, null, null, null, 'weekly', 'monthly'];
   const randomIdx = Math.floor(Math.random() * seriesValues.length);
   return seriesValues[randomIdx];
 };
@@ -47,6 +47,7 @@ function camelToUnderscore(obj) {
 
 
 module.exports = {
+  randomSeries: createRandomSeries,
   createNData: createDataNTimes,
   createSingleData: createSingleData,
   camelToUnder: camelToUnderscore,
