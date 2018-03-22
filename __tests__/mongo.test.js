@@ -1,6 +1,5 @@
 const { MongoClient } = require('mongodb');
 const seed = require('../workers/mongoDB/mongoInsert.js');
-const generator = require('../workers/dataGenerator.js');
 
 const URL = 'mongodb://localhost:27017/';
 const dbName = 'tests';
