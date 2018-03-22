@@ -1,7 +1,6 @@
 const generator = require('../workers/dataGenerator.js');
 
 describe('tests for data generator', () => {
-
   test('should create an obj data point with correct value types', (done) => {
     const data = generator.createSingleData(1);
     expect(typeof data).toBe('object');
