@@ -17,7 +17,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "seed": "node workers/seed10mSQL.js"
+    "seedmongo": "node workers/mongoDB/mongoSeed.js",
+    "seedpg": "node workers/postgreSQL/postgresSeed.js",
+    "querymongo": "node workers/mongoDB/mongoQuery.js",
+    "querypg": "node workers/postgreSQL/postgresQuery.js"
   },
   "dependencies": {
     "async": "^2.6.0",

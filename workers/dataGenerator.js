@@ -8,24 +8,26 @@ const createRandomSeries = () => {
   return seriesValues[randomIdx];
 };
 
-const createSingleData = (i) => {
-  const data = {};
-  data.eventId = i;
-  data.startTime = faker.date.past();
-  data.endTime = faker.date.future();
-  data.series = createRandomSeries();
-  data.venuePublic = Math.random() >= 0.5;
-  data.venueName = faker.company.companyName();
-  data.address = faker.address.streetAddress();
-  data.city = faker.address.city();
-  data.state = faker.address.state();
-  data.longitude = faker.address.longitude();
-  data.latitude = faker.address.latitude();
+const createSingleData = (id) => {
+  const data = {
+    eventId: id,
+    startTime: faker.date.past(),
+    endTime: faker.date.future(),
+    series: createRandomSeries(),
+    venuePublic: Math.random() >= 0.5,
+    venueName: faker.company.companyName(),
+    address: faker.address.streetAddress(),
+    city: faker.address.city(),
+    state: faker.address.state(),
+    longitude: faker.address.longitude(),
+    latitude: faker.address.latitude(),
+  };
   return data;
 };
 
-const createDataNTimes = (start, end) => {
+const createDataNTimes = (start, increment) => {
   const data = [];
+  const end = start + increment;
   for (let i = start; i < end; i += 1) {
     data.push(createSingleData(i));
   }

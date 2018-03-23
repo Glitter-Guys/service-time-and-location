@@ -1,27 +1,28 @@
 const generator = require('../dataGenerator.js');
 
-async function seedData(collection, db, start, batch, increments, totalEntries, callback) {
+async function insertData(collection, db, batchSize, totalEntries, callback) {
   console.time('Seed Time');
-  let total = start;
-  let batchSize = batch;
+  console.log('Seeding Begins');
+  let totalSeeded = 0;
   const amountOfBatches = totalEntries / batchSize;
   try {
     for (let i = 0; i < amountOfBatches; i += 1) {
-      const data = generator.createNData(total, batchSize);
+      const data = generator.createNData(totalSeeded, batchSize);
       await collection.insertMany(data);
-      total += increments;
-      batchSize += increments;
-      if (total % (totalEntries / 10) === 0) {
-        console.log(total);
+      totalSeeded += batchSize;
+      if (totalSeeded % (totalEntries / 10) === 0) {
+        console.log(totalSeeded, 'entries seeded');
       }
     }
+    console.log('Seeding finished');
+    console.log('creating indexes');
+    await collection.createIndex({ eventId: 1 });
+    console.log('indexing done');
   } catch (error) {
     callback(error);
   }
   console.timeEnd('Seed Time');
   callback(null, 'successful seed');
-  // db.close();
-  // process.exit();
 }
 
-module.exports = seedData;
+module.exports = insertData;

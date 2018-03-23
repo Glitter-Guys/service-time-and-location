@@ -17,17 +17,19 @@ export default class WhereWhen extends React.Component {
     const url = window.location.href;
     const urlEnd = url.split('/event/')[1];
     const eventId = urlEnd.split('/')[0];
-    fetch(`http://127.0.0.1:9000/api/event/${eventId}`).then((response) => {
-      return response.json();
-    }).then((jsonData) => {
-      console.log(jsonData);
-      this.setState({
-        whereData: jsonData.whereData,
-        whenData: jsonData.whenData,
+    fetch(`http://127.0.0.1:9000/api/event/${eventId}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonData) => {
+        console.log(jsonData);
+        this.setState({
+          whereData: jsonData.whereData,
+          whenData: jsonData.whenData,
+        });
+      }).catch((err) => {
+        throw new Error(err);
       });
-    }).catch((err) => {
-      throw new Error(err);
-    });
   }
 
   render() {

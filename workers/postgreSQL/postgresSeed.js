@@ -1,7 +1,7 @@
 const pgp = require('pg-promise')({});
 const generator = require('../dataGenerator.js');
 const path = require('path');
-const columnSet = require('../db/models/columnSet.js');
+const columnSet = require('./columnSet.js');
 
 const { QueryFile } = pgp;
 
@@ -32,10 +32,8 @@ const createTable = async () => {
   return db.none(table).then(() => db);
 };
 
-function getNextData(t, pageIndex) {
+function getNextData(t, pageIndex, batchSize, amountOfBatches) {
   let data = null;
-  const batchSize = 1000;
-  const amountOfBatches = 10000;
   const oneTenth = amountOfBatches / 10;
   if (pageIndex < amountOfBatches) {
     if (pageIndex % oneTenth === 0) {
@@ -50,13 +48,16 @@ function getNextData(t, pageIndex) {
   return Promise.resolve(data);
 }
 
+const batchSize = 1000;
+const amountOfBatches = 10000;
+
 const seed = async () => {
   const db = await createTable();
   const cs = new pgp.helpers.ColumnSet(columnSet, tableName);
   console.time('Seed Time');
   const response = await db.tx('massive-insert', (t) => {
     return t.sequence((index) => {
-      return getNextData(t, index)
+      return getNextData(t, index, batchSize, amountOfBatches)
         .then((data) => {
           if (data) {
             const insert = pgp.helpers.insert(data, cs);
@@ -71,4 +72,9 @@ const seed = async () => {
   db.$pool.end;
 };
 
-seed();
+// seed();
+
+exports.module = {
+  nextData: getNextData,
+
+};

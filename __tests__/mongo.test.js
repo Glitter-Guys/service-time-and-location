@@ -1,5 +1,5 @@
 const { MongoClient } = require('mongodb');
-const seed = require('../workers/mongoDB/mongoInsert.js');
+const insert = require('../workers/mongoDB/mongoInsert.js');
 
 const URL = 'mongodb://localhost:27017/';
 const dbName = 'tests';
@@ -28,7 +28,7 @@ describe('Tests for MongoDB', () => {
   });
 
   test('should insert 10,000 data points into timelocations', async (done) => {
-    await seed(collection, db, 0, 1000, 1000, 10000, (err, succ) => {
+    await insert(collection, db, 1000, 10000, (err, succ) => {
       if (err) throw err;
       collection.count({}, (error, count) => {
         expect(count).toBe(10000);
