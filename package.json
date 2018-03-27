@@ -32,12 +32,14 @@
     "moment": "^2.20.1",
     "mongodb": "^3.0.4",
     "mongoose": "^5.0.6",
+    "newrelic": "^3.2.0",
     "pg": "^7.4.1",
     "pg-promise": "^8.2.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-inlinesvg": "^0.7.5",
-    "react-moment": "^0.7.0"
+    "react-moment": "^0.7.0",
+    "redis": "^2.8.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

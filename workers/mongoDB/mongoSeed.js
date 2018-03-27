@@ -1,6 +1,7 @@
 const { MongoClient } = require('mongodb');
 const assert = require('assert');
 const insert = require('./mongoInsert.js');
+const query = require('./mongoQuery.js');
 
 const URL = 'mongodb://localhost:27017';
 const dbName = 'YouDown';
@@ -17,9 +18,11 @@ MongoClient.connect(URL, (err, client) => {
   insert(collection, db, batchSize, totalEntries, (error, success) => {
     if (error) throw error;
     console.log(success);
-    // collection.createIndex({ eventId: 1 }, { unique: true })
-    //   .then(() => {
-    //   });
     client.close();
   });
 });
+
+module.exports = {
+  insert: insert,
+  query: query,
+};

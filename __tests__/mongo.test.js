@@ -1,5 +1,6 @@
 const { MongoClient } = require('mongodb');
 const insert = require('../workers/mongoDB/mongoInsert.js');
+const query = require('../workers/mongoDB/mongoQuery.js');
 
 const URL = 'mongodb://localhost:27017/';
 const dbName = 'tests';
@@ -37,5 +38,22 @@ describe('Tests for MongoDB', () => {
       });
     });
   });
-  //test for mongo query
+  test('should query event id 123', (done) => {
+    query.singleQuery(collection, 123, (err, data) => {
+      if (err) throw err;
+      expect(data.eventId).toBe(123);
+      expect(typeof data).toBe('object');
+      done();
+    });
+  });
+  test('should query 10 random ids', (done) => {
+    query.randomQueries(collection, 10000, (err, data) => {
+      if (err) throw err;
+      console.log(collection);
+      console.log('queried data',data);
+      expect(data.length).toBe(10);
+      expect(typeof data[9]).toBe('object');
+      done();
+    });
+  });
 });

@@ -1,6 +1,7 @@
 const pgp = require('pg-promise')({});
 const path = require('path');
 const seed = require('../workers/postgreSQL/postgresSeed.js');
+
 const { QueryFile } = pgp;
 
 const sql = (file) => {
@@ -36,6 +37,7 @@ xdescribe('tests for PostgreSQL', () => {
 
   afterAll((done) => {
     db = undefined;
+    done();
   });
   test('test', (done) => {
     expect(2).toBe(2);

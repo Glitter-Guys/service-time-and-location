@@ -10,8 +10,8 @@ const sql = (file) => {
   return new QueryFile(filePath, { minify: true });
 };
 
-const schema = sql('../db/models/create_schema.sql');
-const table = sql('../db/models/create_table.sql');
+const schema = sql('./create_schema.sql');
+const table = sql('./create_table.sql');
 const tableName = { table: 'timelocations' };
 
 const createTable = async () => {
@@ -72,9 +72,8 @@ const seed = async () => {
   db.$pool.end;
 };
 
-// seed();
+seed();
 
 exports.module = {
   nextData: getNextData,
-
 };

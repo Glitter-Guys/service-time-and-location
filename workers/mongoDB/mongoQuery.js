@@ -1,36 +1,40 @@
-const { MongoClient } = require('mongodb');
-
-const URL = 'mongodb://localhost:27017';
-const dbName = 'YouDown';
-const collectionName = 'timelocations';
-
-let db;
-let collection;
-
-MongoClient.connect(URL, (err, client) => {
-  db = client.db(dbName);
-  collection = db.collection(collectionName);
-  query((error, count) => {
-    if (error) throw error;
-    // console.log('Average read time ', time / 10);
-    console.log(count, 'was queried');
-    client.close();
-  });
-});
-
-function generateRandomID() {
-  return Math.floor(Math.random() * 10000000);
+function generateRandomID(max) {
+  return Math.floor(Math.random() * max);
 }
 
-async function query(callback) {
-  let counter = 0;
+async function randomQueries(collection, max, callback) {
+  const data = [];
   for (let i = 0; i < 10; i += 1) {
     console.time('Single Query Time');
-    const id = generateRandomID();
-    const data = await collection.findOne({ eventId: id });
+    const id = generateRandomID(max);
+    const result = await collection.findOne({ eventId: id });
     console.log('searching for event id', id);
-    counter += 1;
+    data.push(result);
     console.timeEnd('Single Query Time');
   }
-  callback(null, counter);
+  callback(null, data);
 }
+
+function singleQuery(collection, redis, id, callback) {
+  redis.get(id, (err, reply) => {
+    if (err) callback(null);
+    else if (reply) callback(null, JSON.parse(reply));
+    else {
+      collection
+        .findOne({ eventId: id })
+        .then((data) => {
+          redis.set(id, JSON.stringify(data), () => {
+            callback(null, data);
+          });
+        })
+        .catch((error) => {
+          throw error;
+        });
+    }
+  });
+}
+
+module.exports = {
+  singleQuery: singleQuery,
+  randomQueries: randomQueries,
+};

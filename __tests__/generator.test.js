@@ -21,7 +21,7 @@ describe('tests for data generator', () => {
     done();
   });
   test('should create an array of 10 objects', (done) => {
-    const array = generator.createNData(10);
+    const array = generator.createNData(0, 10);
     expect(Array.isArray(array)).toBe(true);
     expect(typeof array[0]).toBe('object');
     expect(array.length).toBe(10);
